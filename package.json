@@ -1,0 +1,11 @@
+{
+  "name": "daab-session",
+  "version": "0.1.0",
+  "description": "simple session middleware for daab",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sho Kuroda <krdlab@gmail.com>",
+  "license": "MIT"
+}
