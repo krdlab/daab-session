@@ -46,11 +46,11 @@ const middleware = ({store, sessionable}) => {
             return;
         }
 
-        res.message.session = sessionable(res) ? (store.find(res) || store.generate(res)) : null;
+        res.session = sessionable(res) ? (store.find(res) || store.generate(res)) : null;
         try {
             next();
         } finally {
-            res.message.session && store.save(res.message.session);
+            res.session && store.save(res.session);
         }
     };
 };
