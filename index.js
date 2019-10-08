@@ -54,16 +54,16 @@ const middleware = ({ store, sessionable }) => {
 const withSession = (options, actions) => {
     const sessionable = options.sessionable || (res => (res.message.room && res.message.user));
     const sessionIdPrefix = options.sessionIdPrefix || 'daab.';
-    const createId = options.createId || (res => (`${sessionIdPrefix}${res.message.room}.${res.message.user.id}`));
+    const createID = options.createID || (res => (`${sessionIdPrefix}${res.message.room}.${res.message.user.id}`));
     const store = options.store || new MemoryStore();
 
     store.find = (res, cb) => {
-        res.sessionID = createId(res);
+        res.sessionID = createID(res);
         res.sessionStore = store;
         store.get(res.sessionID, (err, data) => cb(err, new Session(res, data)));
     };
     store.generate = res => {
-        res.sessionID = createId(res);
+        res.sessionID = createID(res);
         res.sessionStore = store;
         return new Session(res, {});
     };
