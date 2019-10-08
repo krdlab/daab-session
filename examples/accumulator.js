@@ -6,9 +6,6 @@
 
 const withSession = require('daab-session');
 
-const options = {
-};
-
 const actions = robot => {
   robot.respond(/add (\d+)$/i, res => {
     // NOTE: accumulate an integer value for each (talk, user)
@@ -24,4 +21,4 @@ const actions = robot => {
   });
 };
 
-module.exports = withSession(options, actions);
+module.exports = withSession(actions);

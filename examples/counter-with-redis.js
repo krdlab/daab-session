@@ -5,11 +5,10 @@
 'use strict';
 
 const withSession = require('daab-session');
-const redis = require('redis');
-const connect = require('connect-redis');
 
+const redis = require('redis');
 const client = redis.createClient();
-const RedisStore = connect(withSession);
+const RedisStore = require('connect-redis')(withSession);
 
 const options = {
   store: new RedisStore({ client })
@@ -24,4 +23,4 @@ const actions = robot => {
   });
 };
 
-module.exports = withSession(options, actions);
+module.exports = withSession(actions, options);

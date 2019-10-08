@@ -6,9 +6,6 @@
 
 const withSession = require('daab-session');
 
-const options = {
-};
-
 const actions = robot => {
   robot.respond(/count$/i, res => {
     // NOTE: increase a counter for each (talk, user)
@@ -18,4 +15,4 @@ const actions = robot => {
   });
 };
 
-module.exports = withSession(options, actions);
+module.exports = withSession(actions);

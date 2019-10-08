@@ -51,7 +51,7 @@ const middleware = ({ store, sessionable }) => {
     };
 };
 
-const withSession = (options, actions) => {
+const withSession = (actions, options = {}) => {
     const sessionable = options.sessionable || (res => (res.message.room && res.message.user));
     const sessionIdPrefix = options.sessionIdPrefix || 'daab.';
     const createID = options.createID || (res => (`${sessionIdPrefix}${res.message.room}.${res.message.user.id}`));
