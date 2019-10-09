@@ -6,6 +6,14 @@
 
 const withSession = require('daab-session');
 
+const redis = require('redis');
+const client = redis.createClient();
+const RedisStore = require('connect-redis')(withSession);
+
+const options = {
+  store: new RedisStore({ client })
+};
+
 const actions = robot => {
   robot.respond(/count$/i, res => {
     // NOTE: increase a counter for each (talk, user)
@@ -15,4 +23,4 @@ const actions = robot => {
   });
 };
 
-module.exports = withSession(actions);
+module.exports = withSession(actions, options);

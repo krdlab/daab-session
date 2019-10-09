@@ -1,6 +1,6 @@
 {
   "name": "daab-session",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "simple session middleware for daab",
   "main": "index.js",
   "scripts": {
