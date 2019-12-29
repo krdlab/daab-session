@@ -5,13 +5,13 @@
 
 import { Store, StoreCallback } from './store';
 import { MemoryStore } from './store/memory';
+import { RedisStore } from './store/redis';
 import { Session } from './session';
 import './types/daab';
 
 
 type SessionOptions<R, D> = {
     isSessionable: (res: daab.Response<R, D>) => boolean;
-    sessionIdPrefix: string;
     createId: (res: daab.Response<R, D>) => string;
     store: Store<R, D>;
 };
@@ -68,8 +68,7 @@ const middleware = <R, D>({ store, isSessionable }: SessionMiddlewareParams<R, D
 
 const withSession = <A, D, R extends daab.Robot<A, D>>(actions: DaabActions<A, D, R>, options: Partial<SessionOptions<R, D>> = {}) => {
     const isSessionable = options.isSessionable || (res => (!!res.message.room && !!res.message.user));
-    const sessionIdPrefix = options.sessionIdPrefix || 'daab.';
-    const createId = options.createId || (res => (`${sessionIdPrefix}${res.message.room}.${res.message.user.id}`));
+    const createId = options.createId || (res => (`${res.message.room}.${res.message.user.id}`));
     const store = options.store || new MemoryStore<R, D>();
 
     store.find = (res, cb) => {
@@ -89,5 +88,8 @@ const withSession = <A, D, R extends daab.Robot<A, D>>(actions: DaabActions<A, D
     };
 };
 
-withSession.Store = Store; // * for connect-redis
-export = withSession;
+export = {
+    withSession,
+    Store,
+    RedisStore
+};
