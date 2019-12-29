@@ -2,26 +2,41 @@
 // 
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-'use strict';
 
-const Store = require('./lib/store.js');
-const MemoryStore = require('./lib/store/memory.js');
-const Session = require('./lib/session.js');
+import { Store, StoreCallback } from './lib/store';
+import { MemoryStore } from './lib/store/memory';
+import { Session } from './lib/session';
+import './types/daab';
 
-const middleware = ({ store, sessionable }) => {
-    const getSession = (res, cb) => {
-        if (!sessionable(res)) {
-            cb(null, null);
+
+type SessionOptions<R, D> = {
+    isSessionable: (res: daab.Response<R, D>) => boolean;
+    sessionIdPrefix: string;
+    createId: (res: daab.Response<R, D>) => string;
+    store: Store<R, D>;
+};
+
+type SessionMiddlewareParams<R, D> = {
+    store: Store<R, D>,
+    isSessionable: (res: daab.Response<R, D>) => boolean
+};
+
+type DaabActions<A, D, R extends daab.Robot<A, D>> = (robot: R) => void;
+
+const middleware = <R, D>({ store, isSessionable }: SessionMiddlewareParams<R, D>): daab.Middleware<R, D> => {
+    const getSession = (res: daab.Response<R, D>, cb: StoreCallback<R, D>) => {
+        if (!isSessionable(res)) {
+            cb(undefined, undefined);
         }
         store.find(res, (err, se) => {
             if (!!se) {
                 cb(err, se);
             } else {
-                cb(null, store.generate(res))
+                cb(undefined, store.generate(res))
             }
         });
     };
-    const endSession = session => {
+    const endSession: (session?: Session<R, D>) => void = session => {
         if (!session) {
             return;
         }
@@ -51,28 +66,28 @@ const middleware = ({ store, sessionable }) => {
     };
 };
 
-const withSession = (actions, options = {}) => {
-    const sessionable = options.sessionable || (res => (res.message.room && res.message.user));
+const withSession = <A, D, R extends daab.Robot<A, D>>(actions: DaabActions<A, D, R>, options: Partial<SessionOptions<R, D>> = {}) => {
+    const isSessionable = options.isSessionable || (res => (!!res.message.room && !!res.message.user));
     const sessionIdPrefix = options.sessionIdPrefix || 'daab.';
-    const createID = options.createID || (res => (`${sessionIdPrefix}${res.message.room}.${res.message.user.id}`));
-    const store = options.store || new MemoryStore();
+    const createId = options.createId || (res => (`${sessionIdPrefix}${res.message.room}.${res.message.user.id}`));
+    const store = options.store || new MemoryStore<R, D>();
 
     store.find = (res, cb) => {
-        res.sessionID = createID(res);
+        res.sessionID = createId(res);
         res.sessionStore = store;
-        store.get(res.sessionID, (err, data) => cb(err, new Session(res, data)));
+        store.get(res.sessionID, cb);
     };
     store.generate = res => {
-        res.sessionID = createID(res);
+        res.sessionID = createId(res); // NOTE: createID は外部から提供されなければならない
         res.sessionStore = store;
         return new Session(res, {});
     };
 
-    return robot => {
-        robot.listenerMiddleware(middleware({ store, sessionable }));
+    return (robot: R) => {
+        robot.listenerMiddleware(middleware({ store, isSessionable }));
         actions(robot);
     };
-}
+};
 
-module.exports = withSession;
-module.exports.Store = Store; // * for connect-redis
+withSession.Store = Store; // * for connect-redis
+export = withSession;

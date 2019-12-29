@@ -3,35 +3,33 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-const Store = require('../store.js');
+import { Store, StoreCallback, nop } from '../store';
 
-const nop = () => {};
+export class MemoryStore<R, D> extends Store<R, D> {
+    private sessions: { [id: string]: string };
 
-class MemoryStore extends Store {
     constructor() {
         super();
         this.sessions = {};
     }
 
-    destroy(id, cb = nop) {
+    destroy(id: string, cb: StoreCallback<R, D> = nop) {
         delete this.sessions[id];
-        cb();
+        cb(undefined, undefined);
     }
 
-    get(id, cb = nop) {
+    get(id: string, cb: StoreCallback<R, D>) {
         const data = this.sessions[id];
-        const parsed = data ? JSON.parse(data) : null;
-        cb(null, parsed);
+        const s = data ? this.createSession(id, JSON.parse(data) as Partial<D>) : undefined;
+        cb(undefined, s);
     }
 
-    set(id, data, cb = nop) {
+    set(id: string, data: Partial<D>, cb: StoreCallback<R, D> = nop) {
         this.sessions[id] = JSON.stringify(data);
-        cb();
+        cb(undefined, undefined);
     }
 
-    length(cb = nop) {
-        cb(null, Object.keys(this.sessions).length);
+    length(cb: (err?: Error, data?: number) => void) {
+        cb(undefined, Object.keys(this.sessions).length);
     }
 }
-
-module.exports = MemoryStore;
