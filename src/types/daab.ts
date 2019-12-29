@@ -6,8 +6,8 @@
 /// <reference types="hubot" />
 
 import Hubot from 'hubot';
-import { Session } from '../lib/session';
-import { Store } from '../lib/store';
+import { Session } from '../session';
+import { Store } from '../store';
 
 declare global {
     namespace Hubot {

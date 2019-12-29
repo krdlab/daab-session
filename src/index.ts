@@ -3,9 +3,9 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { Store, StoreCallback } from './lib/store';
-import { MemoryStore } from './lib/store/memory';
-import { Session } from './lib/session';
+import { Store, StoreCallback } from './store';
+import { MemoryStore } from './store/memory';
+import { Session } from './session';
 import './types/daab';
 
 

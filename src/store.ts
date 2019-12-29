@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 import { EventEmitter } from 'events';
-import '../types/daab';
+import './types/daab';
 import { Session } from './session';
 
 export type StoreCallback<R, D> = (err?: Error, data?: Session<R, D>) => void;
