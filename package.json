@@ -14,6 +14,7 @@
   "scripts": {
     "cleanBuild": "rm -r ./dist && tsc",
     "tsc": "tsc",
+    "prepublishOnly": "npm run cleanBuild",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Sho Kuroda <krdlab@gmail.com>",
