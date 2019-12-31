@@ -1,6 +1,6 @@
 {
   "name": "daab-session",
-  "version": "0.3.0-dev",
+  "version": "0.3.0",
   "description": "simple session middleware for daab",
   "repository": {
     "type": "git",
