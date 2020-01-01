@@ -5,7 +5,7 @@ This library adds support for a conversation session to daab.
 ## Installation
 
 ```sh
-npm install krdlab/daab-session
+npm install daab-session
 ```
 
 ## Usage
