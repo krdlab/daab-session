@@ -25,14 +25,14 @@ export abstract class Store<R, D> extends EventEmitter {
 
     abstract destroy(id: string, cb: StoreCallback<R, D>): void;
 
-    regenerate(res: daab.Response<R, D>, fn: StoreCallback<R, D>) {
+    regenerate(res: daab.Response<R, D>, cb: StoreCallback<R, D>) {
         if (!res.sessionID) {
-            fn(new Error('sessionID not found'));
+            cb(new Error('sessionID not found'));
             return;
         }
         this.destroy(res.sessionID, err => {
             const s = err ? undefined : this.generate(res);
-            fn(err, s);
+            cb(err, s);
         });
     }
 
