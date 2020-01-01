@@ -12,7 +12,7 @@ import './types/daab';
 
 type SessionOptions<R, D> = {
     isSessionable: (res: daab.Response<R, D>) => boolean;
-    createId: (res: daab.Response<R, D>) => string;
+    generateId: (res: daab.Response<R, D>) => string;
     store: Store<R, D>;
 };
 
@@ -68,16 +68,16 @@ const middleware = <R, D>({ store, isSessionable }: SessionMiddlewareParams<R, D
 
 const withSession = <A, D, R extends daab.Robot<A, D>>(actions: DaabActions<A, D, R>, options: Partial<SessionOptions<R, D>> = {}) => {
     const isSessionable = options.isSessionable || (res => (!!res.message.room && !!res.message.user));
-    const createId = options.createId || (res => (`${res.message.room}.${res.message.user.id}`));
+    const generateId = options.generateId || (res => (`${res.message.room}.${res.message.user.id}`));
     const store = options.store || new MemoryStore<R, D>();
 
     store.find = (res, cb) => {
-        res.sessionID = createId(res);
+        res.sessionID = generateId(res);
         res.sessionStore = store;
         store.get(res.sessionID, cb);
     };
     store.generate = res => {
-        res.sessionID = createId(res); // NOTE: createID は外部から提供されなければならない
+        res.sessionID = generateId(res);
         res.sessionStore = store;
         return new Session(res, {});
     };
