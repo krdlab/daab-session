@@ -12,7 +12,7 @@
     "dist"
   ],
   "scripts": {
-    "cleanBuild": "rm -r ./dist && tsc",
+    "cleanBuild": "rm -r ./dist; tsc",
     "tsc": "tsc",
     "prepublishOnly": "npm run cleanBuild",
     "test": "echo \"Error: no test specified\" && exit 1"
