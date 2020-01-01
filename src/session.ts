@@ -18,16 +18,14 @@ export class Session<R, D> {
     private _invalid: boolean = false;
     private _data: Partial<D> = {};
 
-    constructor(res: SessionContext<R, D>, data?: Partial<D>) {
+    constructor(res: SessionContext<R, D>, data: Partial<D>) {
         if (!res.sessionID) {
             throw new Error('illegal'); // TODO
         }
 
         this.res = res;
         this.id = res.sessionID;
-        if (!!data && typeof data === 'object') {
-            this._copyFrom(data);
-        }
+        this._copyFrom(data);
     }
 
     _copyFrom(data: Partial<D>) {

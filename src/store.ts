@@ -14,7 +14,7 @@ export const nop: StoreCallback<any, any> = (err, data) => {};
 export abstract class Store<R, D> extends EventEmitter {
 
     public generate: (res: daab.Response<R, D>) => Session<R, D> =
-        res => new Session(res, undefined);
+        res => new Session(res, {});
 
     public find: (res: daab.Response<R, D>, cb: StoreCallback<R, D>) => void =
         (_r, cb) => { cb(new Error('not implemented')); };
