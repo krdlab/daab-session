@@ -17,7 +17,7 @@
     "cleanBuild": "rm -r ./dist; tsc",
     "tsc": "tsc",
     "prepublishOnly": "npm run cleanBuild",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "devDependencies": {
     "typescript": "^3.7.3"
