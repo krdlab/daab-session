@@ -1,11 +1,31 @@
 {
   "name": "daab-session",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "simple session middleware for daab",
-  "main": "index.js",
+  "author": "Sho Kuroda <krdlab@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krdlab/daab-session.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "cleanBuild": "rm -r ./dist; tsc",
+    "tsc": "tsc",
+    "prepublishOnly": "npm run cleanBuild",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Sho Kuroda <krdlab@gmail.com>",
-  "license": "MIT"
+  "devDependencies": {
+    "typescript": "^3.7.3"
+  },
+  "dependencies": {
+    "@types/hubot": "^2.19.5",
+    "@types/node": "^12.12.14",
+    "@types/redis": "^2.8.14",
+    "hubot": "^3.3.2"
+  }
 }

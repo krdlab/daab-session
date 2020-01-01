@@ -4,14 +4,14 @@
 // https://opensource.org/licenses/MIT
 'use strict';
 
-const withSession = require('daab-session');
+const { withSession } = require('daab-session');
 
 const actions = robot => {
   robot.respond(/add (\d+)$/i, res => {
     // NOTE: accumulate an integer value for each (talk, user)
-    let result = res.session.result || 0;
+    let result = res.session.data.result || 0;
     result += parseInt(res.match[1]);
-    res.session.result = result;
+    res.session.data.result = result;
     res.send(`result = ${result}`);
   });
 

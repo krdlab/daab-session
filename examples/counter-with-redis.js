@@ -4,21 +4,20 @@
 // https://opensource.org/licenses/MIT
 'use strict';
 
-const withSession = require('daab-session');
+const { withSession, RedisStore } = require('daab-session');
 
 const redis = require('redis');
 const client = redis.createClient();
-const RedisStore = require('connect-redis')(withSession);
-
 const options = {
   store: new RedisStore({ client })
 };
 
+
 const actions = robot => {
   robot.respond(/count$/i, res => {
     // NOTE: increase a counter for each (talk, user)
-    let i = res.session.count || 0;
-    res.session.count = ++i;
+    let i = res.session.data.count || 0;
+    res.session.data.count = ++i;
     res.send('' + i);
   });
 };

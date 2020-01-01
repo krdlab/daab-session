@@ -13,38 +13,17 @@ npm install krdlab/daab-session
 You can use this library as follows:
 
 ```javascript
-const withSession = require('daab-session');
-
-const options = {};
+const { withSession } = require('daab-session');
 
 const actions = robot => {
   robot.respond(/ping$/i, res => {
-    let session = res.session; // current session object
+    let session = res.session; // current session object. it has 'id' and 'data' fields.
     ...
   });
 };
 
-module.exports = withSession(actions, options);
+module.exports = withSession(actions);
 ```
 
-## Use Redis
-
-Default store is MemoryStore. Using [tj/connect-redis](https://github.com/tj/connect-redis) is able to use Redis as a store.
-
-```javascript
-const withSession = require('daab-session');
-
-const redis = require('redis');
-const client = redis.createClient();
-const RedisStore = require('connect-redis')(withSession);
-
-const options = {
-  store: new RedisStore({ client })
-};
-
-const actions = robot => {
-  // ...
-}
-
-module.exports = withSession(actions, options);
-```
+The default store is MemoryStore. There is RedisStore as another store implementation.
+More information about usage can be found in the examples directory.
