@@ -25,5 +25,5 @@ const actions = robot => {
 module.exports = withSession(actions);
 ```
 
-The default store is MemoryStore. Another store implementation is RedisStore.
+The default store is MemoryStore. There is RedisStore as another store implementation.
 More information about usage can be found in the examples directory.
