@@ -79,7 +79,7 @@ const withSession = <A, D, R extends daab.Robot<A, D>>(actions: DaabActions<A, D
     store.generate = res => {
         res.sessionID = generateId(res);
         res.sessionStore = store;
-        return new Session(res, {});
+        return store.createSession(res.sessionID, {});
     };
 
     return (robot: R) => {
