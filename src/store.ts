@@ -11,7 +11,6 @@ export type StoreCallback<R, D> = (err?: Error, data?: Session<R, D>) => void;
 
 export const nop: StoreCallback<any, any> = (err, data) => {};
 
-// * NOTE: A stored data is an internal data itself held by a Session type value. It's not the Session type.
 export abstract class Store<R, D> extends EventEmitter {
 
     public generate: (res: daab.Response<R, D>) => Session<R, D> =
