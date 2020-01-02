@@ -17,9 +17,11 @@
     "cleanBuild": "rm -r ./dist; tsc",
     "tsc": "tsc",
     "prepublishOnly": "npm run cleanBuild",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "semantic-release": "semantic-release",
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "devDependencies": {
+    "semantic-release": "^15.14.0",
     "typescript": "^3.7.3"
   },
   "dependencies": {
