@@ -33,5 +33,14 @@
     "@types/node": "^12.12.14",
     "@types/redis": "^2.8.14",
     "hubot": "^3.3.2"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github"
+    ]
   }
 }
