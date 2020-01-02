@@ -24,3 +24,8 @@ jobs:
         npm test
       env:
         CI: true
+    - name: semantic-release
+      run: |
+        npm run semantic-release
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
