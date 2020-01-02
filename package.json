@@ -1,6 +1,6 @@
 {
   "name": "daab-session",
-  "version": "0.3.0",
+  "version": "0.0.0-dev",
   "description": "simple session middleware for daab",
   "author": "Sho Kuroda <krdlab@gmail.com>",
   "license": "MIT",
@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/krdlab/daab-session.git"
   },
+  "keywords": [
+    "daab"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
