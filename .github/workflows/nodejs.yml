@@ -25,6 +25,7 @@ jobs:
       env:
         CI: true
     - name: semantic-release
+      if: matrix.node-version == '12.x'
       run: |
         npm run semantic-release
       env:
