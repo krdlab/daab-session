@@ -1,6 +1,6 @@
 {
   "name": "daab-session",
-  "version": "0.0.0-dev",
+  "version": "1.0.1",
   "description": "simple session middleware for daab",
   "author": "Sho Kuroda <krdlab@gmail.com>",
   "license": "MIT",
