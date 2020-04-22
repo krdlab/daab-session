@@ -50,5 +50,8 @@
   },
   "jest": {
     "preset": "ts-jest"
+  },
+  "prettier": {
+    "tabWidth": 4
   }
 }
