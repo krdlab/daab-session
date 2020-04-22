@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { Store } from './store';
+import { Store, StoreCallback } from './store';
 
 const nop = () => {};
 
@@ -44,14 +44,14 @@ export class Session<R, D> {
         this._invalid = true;
     }
 
-    save(cb = nop) {
+    save(cb: StoreCallback<R, D> = nop) {
         if (this.isInvalid) {
             throw new Error(`the session (${this.id}) is invalid`);
         }
         this.res.sessionStore?.set(this.id, this.data, cb);
     }
 
-    destroy(cb = nop) {
+    destroy(cb: StoreCallback<R, D> = nop) {
         this.res.sessionStore?.destroy(this.id, cb);
     }
 }

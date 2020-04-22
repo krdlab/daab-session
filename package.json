@@ -21,12 +21,15 @@
     "tsc": "tsc",
     "prepublishOnly": "npm run cleanBuild",
     "semantic-release": "semantic-release",
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "jest"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.6",
     "@semantic-release/git": "^7.0.18",
+    "@types/jest": "^25.2.1",
+    "jest": "^25.4.0",
     "semantic-release": "^15.14.0",
+    "ts-jest": "^25.4.0",
     "typescript": "^3.7.3"
   },
   "dependencies": {
@@ -44,5 +47,11 @@
       "@semantic-release/github",
       "@semantic-release/git"
     ]
+  },
+  "jest": {
+    "preset": "ts-jest"
+  },
+  "prettier": {
+    "tabWidth": 4
   }
 }

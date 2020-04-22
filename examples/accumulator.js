@@ -7,7 +7,7 @@
 const { withSession } = require('daab-session');
 
 const actions = robot => {
-  robot.respond(/add (\d+)$/i, res => {
+  robot.hear(/add (\d+)$/i, res => {
     // NOTE: accumulate an integer value for each (talk, user)
     let result = res.session.data.result || 0;
     result += parseInt(res.match[1]);
@@ -15,7 +15,7 @@ const actions = robot => {
     res.send(`result = ${result}`);
   });
 
-  robot.respond(/abort$/i, res => {
+  robot.hear(/abort$/i, res => {
     res.session.invalidate();
     res.send('result discarded');
   });

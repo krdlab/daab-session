@@ -14,7 +14,7 @@ const options = {
 
 
 const actions = robot => {
-  robot.respond(/count$/i, res => {
+  robot.hear(/count$/i, res => {
     // NOTE: increase a counter for each (talk, user)
     let i = res.session.data.count || 0;
     res.session.data.count = ++i;
