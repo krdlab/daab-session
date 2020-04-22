@@ -13,16 +13,13 @@ type SessionMiddlewareParams<R, D> = {
 };
 
 export function getSession<R, D>(
-    { store, isSessionable }: SessionMiddlewareParams<R, D>,
+    store: Store<R, D>,
     res: daab.Response<R, D>,
     cb: StoreCallback<R, D>
 ): void {
-    if (!isSessionable(res)) {
-        cb(undefined, undefined);
-    }
-    store.find(res, (err, se) => {
-        if (!!se) {
-            cb(err, se);
+    store.find(res, (err, session) => {
+        if (!!session) {
+            cb(err, session);
         } else {
             cb(undefined, store.generate(res));
         }
@@ -40,17 +37,22 @@ export function endSession<R, D>(session?: Session<R, D>): void {
     }
 }
 
-export function middleware<R, D>(
-    params: SessionMiddlewareParams<R, D>
-): daab.Middleware<R, D> {
+export function middleware<R, D>({
+    store,
+    isSessionable,
+}: SessionMiddlewareParams<R, D>): daab.Middleware<R, D> {
     return (context, next, _done) => {
         const res = context.response;
         if (!!res.session) {
             next();
             return;
         }
+        if (!isSessionable(res)) {
+            next();
+            return;
+        }
 
-        getSession(params, res, (err, session) => {
+        getSession(store, res, (_err, session) => {
             // ! TODO: err
             res.session = session;
             try {
