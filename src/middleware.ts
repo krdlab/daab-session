@@ -1,3 +1,8 @@
+// Copyright (c) 2020 Sho Kuroda <krdlab@gmail.com>
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 import { Store, StoreCallback } from "./store";
 import { Session } from "./session";
 import "./types/daab";
