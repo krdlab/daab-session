@@ -21,7 +21,7 @@
     "tsc": "tsc",
     "prepublishOnly": "npm run cleanBuild",
     "semantic-release": "semantic-release",
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "jest"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.6",
@@ -47,5 +47,8 @@
       "@semantic-release/github",
       "@semantic-release/git"
     ]
+  },
+  "jest": {
+    "preset": "ts-jest"
   }
 }
