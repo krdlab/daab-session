@@ -1,26 +1,26 @@
 // Copyright (c) 2019 Sho Kuroda <krdlab@gmail.com>
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { Store, StoreCallback } from './store';
+import { Store, StoreCallback } from "./store";
 
 const nop = () => {};
 
-export type SessionContext<R, D> = {
-    sessionID?: string,
-    sessionStore?: Store<R, D>
+export type SessionContext<D> = {
+    sessionID?: string;
+    sessionStore?: Store<D>;
 };
 
-export class Session<R, D> {
-    public readonly res: SessionContext<R, D>;
+export class Session<D> {
+    public readonly res: SessionContext<D>;
     public readonly id: string;
     private _invalid: boolean = false;
     private _data: Partial<D> = {};
 
-    constructor(res: SessionContext<R, D>, data: Partial<D>) {
+    constructor(res: SessionContext<D>, data: Partial<D>) {
         if (!res.sessionID) {
-            throw new Error('illegal'); // TODO
+            throw new Error("illegal"); // TODO
         }
 
         this.res = res;
@@ -44,14 +44,14 @@ export class Session<R, D> {
         this._invalid = true;
     }
 
-    save(cb: StoreCallback<R, D> = nop) {
+    save(cb: StoreCallback<D> = nop) {
         if (this.isInvalid) {
             throw new Error(`the session (${this.id}) is invalid`);
         }
         this.res.sessionStore?.set(this.id, this.data, cb);
     }
 
-    destroy(cb: StoreCallback<R, D> = nop) {
+    destroy(cb: StoreCallback<D> = nop) {
         this.res.sessionStore?.destroy(this.id, cb);
     }
 }

@@ -33,10 +33,9 @@
     "typescript": "^3.7.3"
   },
   "dependencies": {
-    "@types/hubot": "^2.19.5",
     "@types/node": "^12.12.14",
     "@types/redis": "^2.8.14",
-    "hubot": "^3.3.2"
+    "lisb-hubot": "^3.3.3"
   },
   "release": {
     "plugins": [
@@ -52,6 +51,7 @@
     "preset": "ts-jest"
   },
   "prettier": {
-    "tabWidth": 4
+    "tabWidth": 4,
+    "printWidth": 120
   }
 }

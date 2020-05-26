@@ -1,43 +1,55 @@
 // Copyright (c) 2019 Sho Kuroda <krdlab@gmail.com>
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-/// <reference types="hubot" />
+/// <reference types="lisb-hubot" />
 
-import Hubot from 'hubot';
-import { Session } from '../session';
-import { Store } from '../store';
+//import "lisb-hubot";
+import { Session } from "../session";
+import { Store } from "../store";
+import * as lh from "lisb-hubot";
+import {
+    RespondType,
+    JsonContent,
+    Stamp,
+    YesNoWithResponse,
+    SelectWithResponse,
+    TaskWithResponse,
+    RemoteFile,
+    RemoteFiles,
+    ActualLocation,
+    TextMessage,
+} from "lisb-hubot";
 
 declare global {
-    namespace Hubot {
-        interface Message {
-            room: string;
-        }
-    }
     namespace daab {
-        class Response<R, D> extends Hubot.Response<R> {
+        interface Response<M extends lh.Message, D> extends lh.Response<M> {
             sessionID?: string;
-            session?: Session<R, D>;
-            sessionStore?: Store<R, D>;
+            session?: Session<D>;
+            sessionStore?: Store<D>;
+        }
+        interface ResponseWithJson<T extends JsonContent, D> extends Response<TextMessage, D> {
+            json: T;
         }
 
-        type Middleware<R, D> = (context: { response: Response<R, D> }, next: any, done: any) => void;
-        type ListenerCallback<R, D> = (response: Response<R, D>) => void;
+        type Middleware<D> = (context: { response: Response<any, D> }, next: any, done: any) => void;
 
-        class Robot<A, D> extends Hubot.Robot<A> {
-            listenerMiddleware(middleware: Middleware<this, D>): void;
+        type ListenerCallback<M extends lh.Message, D> = (response: Response<M, D>) => void;
+        type TypedJsonCallback<T extends RespondType, J extends JsonContent, D> = (res: ResponseWithJson<J, D>) => void;
 
-            catchAll(callback: ListenerCallback<this, D>): void;
-            catchAll(options: any, callback: ListenerCallback<this, D>): void;
-            hear(regex: RegExp, callback: ListenerCallback<this, D>): void;
-            hear(regex: RegExp, options: any, callback: ListenerCallback<this, D>): void;
-            respond(regex: RegExp, callback: ListenerCallback<this, D>): void;
-            respond(regex: RegExp, options: any, callback: ListenerCallback<this, D>): void;
-            enter(callback: ListenerCallback<this, D>): void;
-            enter(options: any, callback: ListenerCallback<this, D>): void;
-            topic(callback: ListenerCallback<this, D>): void;
-            topic(options: any, callback: ListenerCallback<this, D>): void;
+        interface Robot<D> extends lh.Robot {
+            listenerMiddleware(middleware: Middleware<D>): void;
+
+            hear<M extends lh.Message>(regex: RegExp, callback: ListenerCallback<M, D>): void;
+            respond<M extends lh.Message>(regex: RegExp, callback: ListenerCallback<M, D>): void;
+            respond(type: "stamp", callback: TypedJsonCallback<"stamp", Stamp, D>): void;
+            respond(type: "yesno", callback: TypedJsonCallback<"yesno", YesNoWithResponse, D>): void;
+            respond(type: "select", callback: TypedJsonCallback<"select", SelectWithResponse, D>): void;
+            respond(type: "task", callback: TypedJsonCallback<"task", TaskWithResponse, D>): void;
+            respond(type: "file", callback: TypedJsonCallback<"file", RemoteFile, D>): void;
+            respond(type: "files", callback: TypedJsonCallback<"files", RemoteFiles, D>): void;
+            respond(type: "map", callback: TypedJsonCallback<"map", ActualLocation, D>): void;
         }
     }
 }
