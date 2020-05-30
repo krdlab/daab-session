@@ -4,13 +4,13 @@ import { MemoryStore } from "../src/store/memory";
 type Data = { count: number };
 
 describe("session", () => {
-    let session: Session<any, Data>;
+    let session: Session<Data>;
 
     beforeEach(() => {
         session = new Session(
             {
                 sessionID: "session-id",
-                sessionStore: new MemoryStore<any, Data>(),
+                sessionStore: new MemoryStore<Data>(),
             },
             {}
         );
