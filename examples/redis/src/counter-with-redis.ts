@@ -12,19 +12,19 @@ type SessionData = {
   count: number;
 };
 
-type Robot = daab.Robot<any, SessionData>;
+type Robot = daab.Robot<SessionData>;
 
 const options = {
-  store: new RedisStore<Robot, SessionData>({ client })
+  store: new RedisStore<SessionData>({ client })
 };
 
 const actions = (robot: Robot) => {
-  robot.hear(/count$/i, res => {
+  robot.respond(/count$/i, res => {
     // NOTE: increase a counter for each (talk, user)
-    let i = res.session.data.count || 0;
-    res.session.data.count = ++i;
+    let i = res.session!.data.count || 0;
+    res.session!.data.count = ++i;
     res.send('' + i);
   });
 };
 
-exports = withSession(actions, options);
+export = withSession(actions, options);
