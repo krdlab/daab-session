@@ -39,5 +39,5 @@ export function withSession(actions: DaabActions, options: Partial<SessionOption
     };
 }
 
-export { SessionData } from './session';
+export { SessionData } from "./session";
 export { RedisStore } from "./store/redis";

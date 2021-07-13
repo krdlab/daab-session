@@ -7,7 +7,7 @@ import { EventEmitter } from "events";
 import { Session, SessionData } from "./session";
 import { Response } from "lisb-hubot";
 
-type D = SessionData;
+type Data = Partial<SessionData>;
 
 export type StoreCallback = (err?: Error, data?: Session) => void;
 
@@ -37,10 +37,10 @@ export abstract class Store extends EventEmitter {
         });
     }
 
-    abstract set(id: string, data: Partial<D>, cb: StoreCallback): void;
+    abstract set(id: string, data: Data, cb: StoreCallback): void;
     abstract get(id: string, cb: StoreCallback): void;
 
-    createSession(id: string, data: Partial<D>): Session {
+    createSession(id: string, data: Data): Session {
         return new Session({ sessionID: id, sessionStore: this }, data);
     }
 }

@@ -3,14 +3,12 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-/// <reference types="lisb-hubot" />
-
 import { Session } from "../session";
 import { Store } from "../store";
-import * as lh from "lisb-hubot";
+import { Message } from "lisb-hubot";
 
 declare module "lisb-hubot" {
-    interface Response<M extends lh.Message> {
+    interface Response<M extends Message> {
         sessionID?: string;
         session?: Session;
         sessionStore?: Store;
