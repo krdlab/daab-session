@@ -3,18 +3,20 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import "./types/daab";
 import { EventEmitter } from "events";
-import { Session } from "./session";
+import { Session, SessionData } from "./session";
+import { Response } from "lisb-hubot";
 
-export type StoreCallback<D> = (err?: Error, data?: Session<D>) => void;
+type D = SessionData;
 
-export const nop: StoreCallback<any> = (err, data) => {};
+export type StoreCallback = (err?: Error, data?: Session) => void;
 
-export abstract class Store<D> extends EventEmitter {
-    public generate: (res: daab.Response<any, D>) => Session<D> = (res) => new Session(res, {});
+export const nop: StoreCallback = (err, data) => {};
 
-    public find: (res: daab.Response<any, D>, cb: StoreCallback<D>) => void = (_r, cb) => {
+export abstract class Store extends EventEmitter {
+    public generate: (res: Response<any>) => Session = (res) => new Session(res, {});
+
+    public find: (res: Response<any>, cb: StoreCallback) => void = (_r, cb) => {
         cb(new Error("not implemented"));
     };
 
@@ -22,9 +24,9 @@ export abstract class Store<D> extends EventEmitter {
         super();
     }
 
-    abstract destroy(id: string, cb: StoreCallback<D>): void;
+    abstract destroy(id: string, cb: StoreCallback): void;
 
-    regenerate(res: daab.Response<any, D>, cb: StoreCallback<D>) {
+    regenerate(res: Response<any>, cb: StoreCallback) {
         if (!res.sessionID) {
             cb(new Error("sessionID not found"));
             return;
@@ -35,10 +37,10 @@ export abstract class Store<D> extends EventEmitter {
         });
     }
 
-    abstract set(id: string, data: Partial<D>, cb: StoreCallback<D>): void;
-    abstract get(id: string, cb: StoreCallback<D>): void;
+    abstract set(id: string, data: Partial<D>, cb: StoreCallback): void;
+    abstract get(id: string, cb: StoreCallback): void;
 
-    createSession(id: string, data: Partial<D>): Session<D> {
+    createSession(id: string, data: Partial<D>): Session {
         return new Session({ sessionID: id, sessionStore: this }, data);
     }
 }

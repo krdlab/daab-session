@@ -17,7 +17,7 @@
     "dist"
   ],
   "scripts": {
-    "cleanBuild": "rm -r ./dist; tsc",
+    "cleanBuild": "rm -r ./dist; tsc && cp -R ./src/types ./dist/",
     "tsc": "tsc",
     "prepublishOnly": "npm run cleanBuild",
     "semantic-release": "semantic-release",
@@ -30,7 +30,7 @@
     "jest": "^25.4.0",
     "semantic-release": "^17.4.4",
     "ts-jest": "^25.4.0",
-    "typescript": "^3.7.3"
+    "typescript": "^4.3.5"
   },
   "dependencies": {
     "@types/node": "^12.12.14",

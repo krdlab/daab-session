@@ -7,18 +7,20 @@ import { Store, StoreCallback } from "./store";
 
 const nop = () => {};
 
-export type SessionContext<D> = {
+export interface SessionData {}
+
+export type SessionContext = {
     sessionID?: string;
-    sessionStore?: Store<D>;
+    sessionStore?: Store;
 };
 
-export class Session<D> {
-    public readonly res: SessionContext<D>;
+export class Session {
+    public readonly res: SessionContext;
     public readonly id: string;
     private _invalid: boolean = false;
-    private _data: Partial<D> = {};
+    private _data: Partial<SessionData> = {};
 
-    constructor(res: SessionContext<D>, data: Partial<D>) {
+    constructor(res: SessionContext, data: Partial<SessionData>) {
         if (!res.sessionID) {
             throw new Error("illegal"); // TODO
         }
@@ -28,7 +30,7 @@ export class Session<D> {
         this._copyFrom(data);
     }
 
-    _copyFrom(data: Partial<D>) {
+    _copyFrom(data: Partial<SessionData>) {
         this._data = Object.assign({}, data);
     }
 
@@ -44,14 +46,14 @@ export class Session<D> {
         this._invalid = true;
     }
 
-    save(cb: StoreCallback<D> = nop) {
+    save(cb: StoreCallback = nop) {
         if (this.isInvalid) {
             throw new Error(`the session (${this.id}) is invalid`);
         }
         this.res.sessionStore?.set(this.id, this.data, cb);
     }
 
-    destroy(cb: StoreCallback<D> = nop) {
+    destroy(cb: StoreCallback = nop) {
         this.res.sessionStore?.destroy(this.id, cb);
     }
 }

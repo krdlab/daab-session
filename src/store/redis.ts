@@ -3,8 +3,11 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+import { SessionData } from "../session";
 import { Store, StoreCallback, nop } from "../store";
 import redis from "redis";
+
+type D = SessionData;
 
 export interface Serializer {
     parse: Function;
@@ -18,7 +21,7 @@ export interface RedisStoreOptions {
     ttl?: number;
 }
 
-export class RedisStore<D> extends Store<D> {
+export class RedisStore extends Store {
     private readonly client: redis.RedisClient;
     private readonly prefix: string;
     private readonly serializer: Serializer;
@@ -36,7 +39,7 @@ export class RedisStore<D> extends Store<D> {
         return this.prefix + id;
     }
 
-    destroy(id: string, cb: StoreCallback<D> = nop) {
+    destroy(id: string, cb: StoreCallback = nop) {
         const key = this._createKey(id);
         const _cb: redis.Callback<number> = (err, _) => {
             cb(err ? err : undefined, undefined);
@@ -44,7 +47,7 @@ export class RedisStore<D> extends Store<D> {
         this.client.del(key, _cb);
     }
 
-    get(id: string, cb: StoreCallback<D>) {
+    get(id: string, cb: StoreCallback) {
         const key = this._createKey(id);
         this.client.get(key, (err, data) => {
             if (err) {
@@ -56,7 +59,7 @@ export class RedisStore<D> extends Store<D> {
         });
     }
 
-    set(id: string, data: Partial<D>, cb: StoreCallback<D> = nop) {
+    set(id: string, data: Partial<D>, cb: StoreCallback = nop) {
         const key = this._createKey(id);
         const value = this.serializer.stringify(data);
 

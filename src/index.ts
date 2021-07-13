@@ -5,26 +5,22 @@
 
 import { Store } from "./store";
 import { MemoryStore } from "./store/memory";
-import { RedisStore } from "./store/redis";
 import { middleware } from "./middleware";
-import { Response } from "lisb-hubot";
+import { Response, Robot } from "lisb-hubot";
 import "./types/daab";
 
-type SessionOptions<D> = {
+type SessionOptions = {
     isSessionable: (res: Response<any>) => boolean;
     generateId: (res: Response<any>) => string;
-    store: Store<D>;
+    store: Store;
 };
 
-type DaabActions<D, R extends daab.Robot<D>> = (robot: R) => void;
+export type DaabActions = (robot: Robot) => void;
 
-const withSession = <D, R extends daab.Robot<D>>(
-    actions: DaabActions<D, R>,
-    options: Partial<SessionOptions<D>> = {}
-) => {
+export function withSession(actions: DaabActions, options: Partial<SessionOptions> = {}) {
     const isSessionable = options.isSessionable || ((res) => !!res.message.room && !!res.message.user);
     const generateId = options.generateId || ((res) => `${res.message.room}.${res.message.user.id}`);
-    const store = options.store || new MemoryStore<D>();
+    const store = options.store || new MemoryStore();
 
     store.find = (res, cb) => {
         res.sessionID = generateId(res);
@@ -37,14 +33,11 @@ const withSession = <D, R extends daab.Robot<D>>(
         return store.createSession(res.sessionID, {});
     };
 
-    return (robot: R) => {
+    return (robot: Robot) => {
         robot.listenerMiddleware(middleware({ store, isSessionable }));
         actions(robot);
     };
-};
+}
 
-export = {
-    withSession,
-    Store,
-    RedisStore,
-};
+export { SessionData } from './session';
+export { RedisStore } from "./store/redis";

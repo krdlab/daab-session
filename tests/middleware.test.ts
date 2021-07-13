@@ -2,10 +2,10 @@ import { endSession } from "../src/middleware";
 import { Session } from "../src/session";
 
 describe("endSession", () => {
-    let session: Session<{}>;
+    let session: Session;
 
     beforeEach(() => {
-        session = new Session<{}>({ sessionID: "dummy-session-id" }, {});
+        session = new Session({ sessionID: "dummy-session-id" }, {});
     });
 
     it("no action if session is undefined", () => {
