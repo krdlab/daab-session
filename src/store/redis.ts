@@ -1,10 +1,13 @@
 // Copyright (c) 2019 Sho Kuroda <krdlab@gmail.com>
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { Store, StoreCallback, nop } from '../store';
-import redis from 'redis';
+import { SessionData } from "../session";
+import { Store, StoreCallback, nop } from "../store";
+import redis from "redis";
+
+type D = SessionData;
 
 export interface Serializer {
     parse: Function;
@@ -18,7 +21,7 @@ export interface RedisStoreOptions {
     ttl?: number;
 }
 
-export class RedisStore<R, D> extends Store<R, D> {
+export class RedisStore extends Store {
     private readonly client: redis.RedisClient;
     private readonly prefix: string;
     private readonly serializer: Serializer;
@@ -27,7 +30,7 @@ export class RedisStore<R, D> extends Store<R, D> {
     constructor(options: RedisStoreOptions) {
         super();
         this.client = options.client;
-        this.prefix = options.prefix ? options.prefix : 'daab.';
+        this.prefix = options.prefix ? options.prefix : "daab.";
         this.serializer = options.serializer ? options.serializer : JSON;
         this.ttl = options.ttl;
     }
@@ -36,7 +39,7 @@ export class RedisStore<R, D> extends Store<R, D> {
         return this.prefix + id;
     }
 
-    destroy(id: string, cb: StoreCallback<R, D> = nop) {
+    destroy(id: string, cb: StoreCallback = nop) {
         const key = this._createKey(id);
         const _cb: redis.Callback<number> = (err, _) => {
             cb(err ? err : undefined, undefined);
@@ -44,7 +47,7 @@ export class RedisStore<R, D> extends Store<R, D> {
         this.client.del(key, _cb);
     }
 
-    get(id: string, cb: StoreCallback<R, D>) {
+    get(id: string, cb: StoreCallback) {
         const key = this._createKey(id);
         this.client.get(key, (err, data) => {
             if (err) {
@@ -56,16 +59,16 @@ export class RedisStore<R, D> extends Store<R, D> {
         });
     }
 
-    set(id: string, data: Partial<D>, cb: StoreCallback<R, D> = nop) {
+    set(id: string, data: Partial<D>, cb: StoreCallback = nop) {
         const key = this._createKey(id);
         const value = this.serializer.stringify(data);
 
-        const _cb: redis.Callback<'OK' | undefined> = (err, _) => {
+        const _cb: redis.Callback<"OK" | undefined> = (err, _) => {
             cb(err ? err : undefined, undefined);
         };
 
         if (this.ttl != null) {
-            this.client.set(key, value, 'EX', this.ttl, _cb);
+            this.client.set(key, value, "EX", this.ttl, _cb);
         } else {
             this.client.set(key, value, _cb);
         }

@@ -5,18 +5,14 @@
 
 import { Store, StoreCallback } from "./store";
 import { Session } from "./session";
-import "./types/daab";
+import { Middleware, Response } from "lisb-hubot";
 
-type SessionMiddlewareParams<R, D> = {
-    store: Store<R, D>;
-    isSessionable: (res: daab.Response<R, D>) => boolean;
+type SessionMiddlewareParams = {
+    store: Store;
+    isSessionable: (res: Response<any>) => boolean;
 };
 
-export function getSession<R, D>(
-    store: Store<R, D>,
-    res: daab.Response<R, D>,
-    cb: StoreCallback<R, D>
-): void {
+export function getSession<D>(store: Store, res: Response<any>, cb: StoreCallback): void {
     store.find(res, (err, session) => {
         if (!!session) {
             cb(err, session);
@@ -26,7 +22,7 @@ export function getSession<R, D>(
     });
 }
 
-export function endSession<R, D>(session?: Session<R, D>): void {
+export function endSession(session?: Session): void {
     if (!session) {
         return;
     }
@@ -37,10 +33,7 @@ export function endSession<R, D>(session?: Session<R, D>): void {
     }
 }
 
-export function middleware<R, D>({
-    store,
-    isSessionable,
-}: SessionMiddlewareParams<R, D>): daab.Middleware<R, D> {
+export function middleware({ store, isSessionable }: SessionMiddlewareParams): Middleware {
     return (context, next, _done) => {
         const res = context.response;
         if (!!res.session) {

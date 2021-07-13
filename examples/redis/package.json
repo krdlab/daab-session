@@ -1,0 +1,30 @@
+{
+  "name": "example-redis",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "tsc": "tsc",
+    "build": "rm ./scripts/*.js; tsc",
+    "bot": "bin/hubot run"
+  },
+  "author": "",
+  "keywords": [
+    "hubot",
+    "direct",
+    "bot",
+    "daab"
+  ],
+  "description": "",
+  "dependencies": {
+    "@types/node": "^14.0.5",
+    "@types/redis": "^2.8.21",
+    "daab-session": "file:../../",
+    "lisb-forever": "^1.0.0",
+    "lisb-hubot": "^3.3.2",
+    "lisb-hubot-redis-brain": "^1.0.0",
+    "redis": "^3.1.2"
+  },
+  "devDependencies": {
+    "typescript": "^3.9.3"
+  }
+}

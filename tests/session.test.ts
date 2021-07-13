@@ -1,16 +1,20 @@
 import { Session } from "../src/session";
 import { MemoryStore } from "../src/store/memory";
 
-type Data = { count: number };
+declare module "../src/session" {
+    interface SessionData {
+        count: number;
+    }
+}
 
 describe("session", () => {
-    let session: Session<any, Data>;
+    let session: Session;
 
     beforeEach(() => {
         session = new Session(
             {
                 sessionID: "session-id",
-                sessionStore: new MemoryStore<any, Data>(),
+                sessionStore: new MemoryStore(),
             },
             {}
         );
