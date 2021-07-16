@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/krdlab/daab-session/compare/v2.0.0...v2.0.1) (2021-07-16)
+
+
+### Bug Fixes
+
+* update dependencies ([b88970d](https://github.com/krdlab/daab-session/commit/b88970d3fa5e0275283ca19702c47d4c3332db6d))
+
 # [2.0.0](https://github.com/krdlab/daab-session/compare/v1.0.1...v2.0.0) (2021-07-13)
 
 
