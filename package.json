@@ -23,19 +23,22 @@
     "semantic-release": "semantic-release",
     "test": "jest"
   },
+  "peerDependencies": {
+    "lisb-hubot": "^3.3.3"
+  },
   "devDependencies": {
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
-    "@types/jest": "^25.2.1",
-    "jest": "^25.5.4",
+    "@types/jest": "^26.0.24",
+    "jest": "^27.0.6",
+    "lisb-hubot": "^3.3.3",
     "semantic-release": "^17.4.4",
-    "ts-jest": "^25.5.1",
+    "ts-jest": "^27.0.3",
     "typescript": "^4.3.5"
   },
   "dependencies": {
     "@types/node": "^12.12.14",
-    "@types/redis": "^2.8.21",
-    "lisb-hubot": "^3.3.3",
+    "@types/redis": "^2.8.31",
     "redis": "^3.1.2"
   },
   "release": {

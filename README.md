@@ -26,4 +26,5 @@ module.exports = withSession(actions);
 ```
 
 The default store is MemoryStore. There is RedisStore as another store implementation.
-More information about usage can be found in the examples directory.
+
+More information about usage can be found in the [examples directory](examples/).
