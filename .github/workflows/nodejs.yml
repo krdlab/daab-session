@@ -9,14 +9,17 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [14.x, 16.x, 18.x]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
+
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+        cache: npm
+
     - name: npm install, build, and test
       run: |
         npm ci
@@ -24,8 +27,9 @@ jobs:
         npm test
       env:
         CI: true
+
     - name: semantic-release
-      if: matrix.node-version == '12.x'
+      if: matrix.node-version == '18.x'
       run: |
         npm run semantic-release
       env:
